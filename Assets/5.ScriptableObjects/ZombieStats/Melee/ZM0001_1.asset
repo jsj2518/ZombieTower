@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde9d868142594f488bda6cadf5d8044, type: 3}
+  m_Name: ZM0001_1
+  m_EditorClassIdentifier: 
+  runSpeed: 2
+  runAcceleration: 7.5
+  pushbackSpeed: 2
+  climbSpeed: 3
+  rayCastFrontDistance: 0.15
+  rayCastBackDistance: 0.15
+  rayCastUpDistance: 0.2
