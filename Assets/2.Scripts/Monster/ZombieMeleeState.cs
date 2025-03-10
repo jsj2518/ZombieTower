@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ZombieMeleeState : MonoBehaviour
+public class ZombieMeleeState : MonoBehaviour, IHealth
 {
     #region Property
     private Animator anim;
@@ -87,6 +87,11 @@ public class ZombieMeleeState : MonoBehaviour
             hpSlider.gameObject.SetActive(true);
             hpSlider.value = (float)currenHp / stat.hp;
         }
+    }
+
+    public int GetHP()
+    {
+        return currenHp;
     }
 
     private void Dead()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ZombieMeleeMovement : MonoBehaviour
+public class ZombieMeleeMovement : MonoBehaviour, ITargetable
 {
     private const float basePosX = 6f;
     private const float basePosY = -3.6f;
@@ -14,6 +14,7 @@ public class ZombieMeleeMovement : MonoBehaviour
     [SerializeField] private Transform raycastBack;
     [SerializeField] private Transform raycastUpFront;
     [SerializeField] private Transform raycastUpBack;
+    [field: SerializeField] public Transform ShootingTarget;
 
     [Header("Stat")]
     [SerializeField] private ZombieMeleeStatSO stat;
@@ -100,5 +101,10 @@ public class ZombieMeleeMovement : MonoBehaviour
 
         upBackDetected = Physics2D.Raycast(raycastUpBack.position, Vector2.up, stat.rayCastUpDistance, layerZombieMelee);
         Debug.DrawRay(raycastUpBack.position, Vector2.up * stat.rayCastUpDistance, upBackDetected ? Color.cyan : Color.red);
+    }
+
+    public Transform GetTarget()
+    {
+        return ShootingTarget;
     }
 }
