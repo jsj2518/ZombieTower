@@ -77,6 +77,13 @@ public class ZombieMeleeState : MonoBehaviour, IHealth
 
     public void TakeDamage(int damage)
     {
+        GameObject damageIndicator = GameManager.Instance.poolManager.GetObject(Constants.DamageIndicator);
+        if (damageIndicator != null && damageIndicator.TryGetComponent<FloatingMessage>(out FloatingMessage indicator))
+        {
+            damageIndicator.transform.position = hpSlider.transform.position;
+            indicator.Initialize(damage.ToString());
+        }
+
         currenHp -= damage;
         if (currenHp <= 0)
         {

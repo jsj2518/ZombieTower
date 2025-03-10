@@ -18,6 +18,7 @@ public class GameManager : MonoSingleton<GameManager>
         poolManager.name = "Object Pool";
         poolManager.CreatePool($"{Constants.ResourcePath_Monster}{Constants.ZombieMelee0001_1}", 100);
         poolManager.CreatePool($"{Constants.ResourcePath_Projectile}{Constants.ShotgunPallet}", 20);
+        poolManager.CreatePool($"{Constants.ResourcePath_UI}{Constants.DamageIndicator}", 30);
 
         zombiesMelee = new List<GameObject>();
         zombiesMelee.Capacity = 100;

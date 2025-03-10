@@ -45,3 +45,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: TextOverlay
+    uniqueID: 2962617699
+    locked: 0
