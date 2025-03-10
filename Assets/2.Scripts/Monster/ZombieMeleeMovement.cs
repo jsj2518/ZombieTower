@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class ZombieMeleeMovement : MonoBehaviour
 {
@@ -13,13 +9,16 @@ public class ZombieMeleeMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private Transform raycastFront;
     [SerializeField] private Transform raycastBack;
-    [SerializeField] private Transform raycastUp;
+    [SerializeField] private Transform raycastUpFront;
+    [SerializeField] private Transform raycastUpBack;
 
     [Header("Stat")]
     [SerializeField] private ZombieMeleeStatSO stat;
 
     private LayerMask layerZombieMelee;
     #endregion
+
+    private 
 
     void Start()
     {
@@ -41,54 +40,26 @@ public class ZombieMeleeMovement : MonoBehaviour
         bool goForward = true;
         bool goBackward = false;
         bool goUpward = false;
+        float speedForward = -rb.velocity.x;
+        float speedUpward = rb.velocity.y;
 
-        #region Raycast
-        //If Another Zombie up there, Push back
-        RaycastHit2D hit = Physics2D.Raycast(raycastUp.position, Vector2.up, stat.rayCastUpDistance, layerZombieMelee);
-        if (hit == true)
+        DoRaycast(out bool frontDetected, out bool backDetected, out bool upFrontDetected, out bool upBackDetected);
+        if (upFrontDetected)
         {
-            Debug.DrawRay(raycastUp.position, Vector2.up * stat.rayCastUpDistance, Color.cyan);
             goForward = false;
             goBackward = true;
         }
         else
         {
-            Debug.DrawRay(raycastUp.position, Vector2.up * stat.rayCastUpDistance, Color.red);
-            // Object detected in front
-            hit = Physics2D.Raycast(raycastFront.position, Vector2.left, stat.rayCastFrontDistance);
-            if (hit == true)
+            if (backDetected || upBackDetected)
             {
-                Debug.DrawRay(raycastFront.position, Vector2.left * stat.rayCastFrontDistance, Color.cyan);
-                switch (hit.collider.gameObject.tag)
-                {
-                    case "PlayerMeleeBox":
-                        break;
-
-                    case "ZombieMelee":
-                        //If No Zombie in the back, Climb the zombie in the front
-                        hit = Physics2D.Raycast(raycastBack.position, Vector2.right, stat.rayCastBackDistance);
-                        if (hit == true)
-                        {
-                            Debug.DrawRay(raycastBack.position, Vector2.right * stat.rayCastBackDistance, Color.cyan);
-                            goForward = false;
-                        }
-                        else
-                        {
-                            Debug.DrawRay(raycastBack.position, Vector2.right * stat.rayCastBackDistance, Color.red);
-                            goUpward = true;
-                        }
-                        break;
-                }
+                //goForward = false;
             }
-            else
+            else if (frontDetected)
             {
-                Debug.DrawRay(raycastFront.position, Vector2.left * stat.rayCastFrontDistance, Color.red);
+                goUpward = true;
             }
         }
-        #endregion
-
-        float speedForward = -rb.velocity.x;
-        float speedUpward = rb.velocity.y;
 
         if (goBackward)
         {
@@ -110,5 +81,20 @@ public class ZombieMeleeMovement : MonoBehaviour
         }
 
         rb.velocity = new Vector2(-speedForward, speedUpward);
+    }
+
+    private void DoRaycast(out bool frontDetected, out bool backDetected, out bool upFrontDetected, out bool upBackDetected)
+    {
+        frontDetected = Physics2D.Raycast(raycastFront.position, Vector2.left, stat.rayCastFrontDistance, layerZombieMelee);
+        Debug.DrawRay(raycastFront.position, Vector2.left * stat.rayCastFrontDistance, frontDetected ? Color.cyan : Color.red);
+
+        backDetected = Physics2D.Raycast(raycastBack.position, Vector2.right, stat.rayCastBackDistance, layerZombieMelee);
+        Debug.DrawRay(raycastBack.position, Vector2.right * stat.rayCastBackDistance, backDetected ? Color.cyan : Color.red);
+
+        upFrontDetected = Physics2D.Raycast(raycastUpFront.position, Vector2.up, stat.rayCastUpDistance, layerZombieMelee);
+        Debug.DrawRay(raycastUpFront.position, Vector2.up * stat.rayCastUpDistance, upFrontDetected ? Color.cyan : Color.red);
+
+        upBackDetected = Physics2D.Raycast(raycastUpBack.position, Vector2.up, stat.rayCastUpDistance, layerZombieMelee);
+        Debug.DrawRay(raycastUpBack.position, Vector2.up * stat.rayCastUpDistance, upBackDetected ? Color.cyan : Color.red);
     }
 }
