@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ZombieMeleeStatSO : ScriptableObject
 {
+    [Header("Movement")]
     public float runSpeed;
     public float runAcceleration;
     public float pushbackSpeed;
@@ -10,4 +11,7 @@ public class ZombieMeleeStatSO : ScriptableObject
     public float rayCastFrontDistance;
     public float rayCastBackDistance;
     public float rayCastUpDistance;
+
+    [Header("Stat")]
+    public int hp;
 }

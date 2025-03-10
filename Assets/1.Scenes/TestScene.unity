@@ -901,7 +901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 988428232}
   - component: {fileID: 988428233}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BoxTrans
   m_TagString: PlayerMeleeBox
   m_Icon: {fileID: 0}
@@ -1179,6 +1179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0182d07ac1641742b44572ba51e76c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnStartTime: 0
+  spawnStartInterval: 1
 --- !u!1 &1489341058
 GameObject:
   m_ObjectHideFlags: 0

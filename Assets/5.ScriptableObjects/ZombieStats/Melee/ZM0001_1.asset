@@ -19,3 +19,4 @@ MonoBehaviour:
   rayCastFrontDistance: 0.15
   rayCastBackDistance: 0.15
   rayCastUpDistance: 0.2
+  hp: 50

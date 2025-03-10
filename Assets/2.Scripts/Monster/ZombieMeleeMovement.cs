@@ -8,7 +8,6 @@ public class ZombieMeleeMovement : MonoBehaviour
 
     #region Property
     private Rigidbody2D rb;
-    private Collider2D col;
 
     [Header("Movement")]
     [SerializeField] private Transform raycastFront;
@@ -18,16 +17,15 @@ public class ZombieMeleeMovement : MonoBehaviour
 
     [Header("Stat")]
     [SerializeField] private ZombieMeleeStatSO stat;
-
-    private LayerMask layerZombieMelee;
     #endregion
 
-    private 
+    private LayerMask layerZombieMelee;
+
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
     }
 
     public void Initialize(Enums.Lane lane)
