@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ZombieMeleeMovement : MonoBehaviour
 {
+    private const float basePosX = 6f;
+    private const float basePosY = -3.6f;
+    private const float stepPosY = 0.4f;
+
     #region Property
     private Rigidbody2D rb;
     private Collider2D col;
@@ -24,15 +28,17 @@ public class ZombieMeleeMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-
-        // Temp
-        Initialize(Enums.Lane.Lane1);
     }
 
     public void Initialize(Enums.Lane lane)
     {
         gameObject.layer = (int)lane;
         layerZombieMelee = 1 << (int)lane;
+
+        float posY = (lane - Enums.Lane.Lane1) * stepPosY + basePosY;
+        transform.position = new Vector2 (basePosX, posY);
+
+        gameObject.SetActive(true);
     }
 
     void Update()
