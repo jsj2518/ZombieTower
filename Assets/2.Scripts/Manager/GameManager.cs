@@ -10,6 +10,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] private float spawnStartTime = 0;
     [SerializeField] private float spawnStartInterval = 1;
+    [SerializeField] private float SpawnAccelerationTime = 5.5f;
+    [SerializeField] private float SpawnAccelerationRatio = 2f;
 
     protected override void Init()
     {
@@ -27,6 +29,7 @@ public class GameManager : MonoSingleton<GameManager>
     private void Start()
     {
         InvokeRepeating(nameof(SpawnZombie), spawnStartTime, spawnStartInterval);
+        Invoke(nameof(SpawnAcceleration), SpawnAccelerationTime);
     }
 
 
@@ -39,5 +42,19 @@ public class GameManager : MonoSingleton<GameManager>
         zombieMeleeMovement.Initialize((Enums.Lane)Random.Range((int)Enums.Lane.Lane1, (int)Enums.Lane.Lane3 + 1));
         ZombieMeleeState zombieMeleeState = zombieMelee.GetComponent<ZombieMeleeState>();
         zombieMeleeState.Initialize();
+        zombieMeleeState.OnDead += ZombieMeleeDeadEvent;
+    }
+
+    private void ZombieMeleeDeadEvent(GameObject zombieMelee)
+    {
+        zombiesMelee.Remove(zombieMelee);
+        ZombieMeleeState zombieMeleeState = zombieMelee.GetComponent<ZombieMeleeState>();
+        zombieMeleeState.OnDead -= ZombieMeleeDeadEvent;
+    }
+
+    private void SpawnAcceleration()
+    {
+        CancelInvoke(nameof(SpawnZombie));
+        InvokeRepeating(nameof(SpawnZombie), 0f, spawnStartInterval / SpawnAccelerationRatio);
     }
 }

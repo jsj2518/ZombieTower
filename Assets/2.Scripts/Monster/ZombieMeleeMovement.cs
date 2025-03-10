@@ -8,6 +8,8 @@ public class ZombieMeleeMovement : MonoBehaviour, ITargetable
 
     #region Property
     private Rigidbody2D rb;
+    private SpriteRenderer[] spriteRenderers;
+    private ZombieMeleeState state;
 
     [Header("Movement")]
     [SerializeField] private Transform raycastFront;
@@ -20,22 +22,33 @@ public class ZombieMeleeMovement : MonoBehaviour, ITargetable
     [SerializeField] private ZombieMeleeStatSO stat;
     #endregion
 
+    private int laneNum;
     private LayerMask layerZombieMelee;
 
 
 
-    void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        state = GetComponent<ZombieMeleeState>();
+        state.OnDead += DeadEvent;
     }
 
     public void Initialize(Enums.Lane lane)
     {
+        laneNum = lane - Enums.Lane.Lane1;
+
         gameObject.layer = (int)lane;
         layerZombieMelee = 1 << (int)lane;
 
-        float posY = (lane - Enums.Lane.Lane1) * stepPosY + basePosY;
+        float posY = laneNum * stepPosY + basePosY;
         transform.position = new Vector2 (basePosX, posY);
+
+        foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+        {
+            spriteRenderer.sortingOrder += (2 - laneNum) * 10;
+        }
 
         gameObject.SetActive(true);
     }
@@ -106,5 +119,13 @@ public class ZombieMeleeMovement : MonoBehaviour, ITargetable
     public Transform GetTarget()
     {
         return ShootingTarget;
+    }
+
+    private void DeadEvent(GameObject zombieMelee)
+    {
+        foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+        {
+            spriteRenderer.sortingOrder -= (2 - laneNum) * 10;
+        }
     }
 }

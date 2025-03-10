@@ -21,7 +21,7 @@ public class ZombieMeleeState : MonoBehaviour, IHealth
     private static int animIsAttacking;
     private static int animIsDead;
 
-    public event Action OnDead;
+    public event Action<GameObject> OnDead;
 
     private int currenHp;
     private GameObject attackTarget;
@@ -108,6 +108,6 @@ public class ZombieMeleeState : MonoBehaviour, IHealth
 
         gameObject.SetActive(false);
 
-        OnDead?.Invoke();
+        OnDead?.Invoke(gameObject);
     }
 }
